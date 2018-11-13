@@ -12,13 +12,41 @@ public class StopwatchActivity extends AppCompatActivity {
 
     private int seconds = 0;
     private boolean running;
+    private boolean wasRunning;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stopwatch);
-
+        if (savedInstanceState != null) {
+            seconds = savedInstanceState.getInt("seconds");
+            running = savedInstanceState.getBoolean("running");
+            wasRunning = savedInstanceState.getBoolean("wasRunning");
+        }
         runTimer();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("seconds", seconds);
+        outState.putBoolean("running", running);
+        outState.putBoolean("wasRunning", wasRunning);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        wasRunning = running;
+        running = false;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (running) {
+            wasRunning = true;
+        }
     }
 
     // Starts the stop watch running when the Start button is clicked
@@ -37,6 +65,7 @@ public class StopwatchActivity extends AppCompatActivity {
         seconds = 0;
     }
 
+
     // Sets the number of seconds on the timer
     private void runTimer() {
         final TextView timeView = findViewById(R.id.time_view);
@@ -44,9 +73,9 @@ public class StopwatchActivity extends AppCompatActivity {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                int hours = seconds/3600;
-                int minutes = (seconds %3600)/60;
-                int secs = seconds%60;
+                int hours = seconds / 3600;
+                int minutes = (seconds % 3600) / 60;
+                int secs = seconds % 60;
                 String time = String.format(Locale.UK, "%d:%02d:%02d", hours, minutes, secs);
                 timeView.setText(time);
                 if (running) {
@@ -55,5 +84,7 @@ public class StopwatchActivity extends AppCompatActivity {
                 handler.postDelayed(this, 1000);
             }
         });
+
+
     }
- }
+}
