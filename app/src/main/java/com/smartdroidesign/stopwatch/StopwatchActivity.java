@@ -18,24 +18,26 @@ public class StopwatchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stopwatch);
 
+        runTimer();
     }
 
-    // Start the stop watch running when the Start button is clicked
+    // Starts the stop watch running when the Start button is clicked
     public void onClickStart(View view) {
         running = true;
     }
 
-    // Stop the stop watch running when the Stop button is clicked
+    // Stops the stop watch running when the Stop button is clicked
     public void onClickStop(View view) {
         running = false;
     }
 
-    // Reset the stop watch running when the Reset button is clicked
+    // Resets the stop watch running when the Reset button is clicked
     public void onClickReset(View view) {
         running = false;
         seconds = 0;
     }
 
+    // Sets the number of seconds on the timer
     private void runTimer() {
         final TextView timeView = findViewById(R.id.time_view);
         final Handler handler = new Handler();
