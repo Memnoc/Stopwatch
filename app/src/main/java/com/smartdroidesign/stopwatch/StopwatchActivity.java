@@ -26,6 +26,7 @@ public class StopwatchActivity extends AppCompatActivity {
         runTimer();
     }
 
+    // Save the state of the watch if it's about to be destroyed
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -34,16 +35,18 @@ public class StopwatchActivity extends AppCompatActivity {
         outState.putBoolean("wasRunning", wasRunning);
     }
 
+    // If the activity's paused, stop the watch
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onPause() {
+        super.onPause();
         wasRunning = running;
         running = false;
     }
 
+    // If the activity's resumed, start the watch again if it was running previously
     @Override
-    protected void onStart() {
-        super.onStart();
+    protected void onResume() {
+        super.onResume();
         if (wasRunning) {
             running = true;
         }
